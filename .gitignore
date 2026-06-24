@@ -1,0 +1,72 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# =========================
+# Virtual Environment
+# =========================
+.venv/
+venv/
+env/
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# VS Code / IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Testing / Coverage
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+.coverage.*
+.cache/
+
+# =========================
+# Ruff / Linting
+# =========================
+.ruff_cache/
+
+# =========================
+# Alembic / Database
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+
+# IMPORTANT:
+# Do NOT ignore alembic/versions/
+# Migration files must be committed.
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Build Artifacts
+# =========================
+build/
+dist/
+*.egg-info/
