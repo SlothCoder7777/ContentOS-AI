@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.api.router import api_router
 from app.core.config import settings
+from app.core.cors import configure_cors
 from app.core.database import get_db
 from app.core.exceptions import register_exception_handlers
 
@@ -12,6 +13,7 @@ app = FastAPI(
     version="1.0.0",
     description="ContentOS AI backend API",
 )
+configure_cors(app)
 register_exception_handlers(app)
 
 app.include_router(api_router, prefix="/api")
