@@ -30,6 +30,7 @@ jobs:
             JWT_ALGORITHM: HS256
             ACCESS_TOKEN_EXPIRE_MINUTES: 30
             ENVIRONMENT: ci
+            PYTHONPATH: ${{ github.workspace }}
 
         steps:
             - name: Checkout repository
@@ -80,10 +81,10 @@ jobs:
               run: |
                   python -m compileall app
 
-            - name: Run tests if tests folder exists
+            - name: Run backend tests
               run: |
                   if (Test-Path "tests") {
-                    pytest -q
+                    python -m pytest tests -q
                   } else {
-                    Write-Host "No tests folder found. Skipping pytest for now."
+                    Write-Host "No tests folder found. Skipping pytest."
                   }
