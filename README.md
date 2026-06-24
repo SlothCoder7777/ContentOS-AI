@@ -71,6 +71,8 @@ contentos-ai/
 ├── requirements.txt
 └── README.md
 
+---
+
 ## Local Installation
 
 Local Setup - Windows 11
