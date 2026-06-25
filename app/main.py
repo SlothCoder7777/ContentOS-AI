@@ -1,6 +1,4 @@
-from fastapi import Depends, FastAPI
-from sqlalchemy import text
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
 
 from app.api.router import api_router
 from app.core.cors import configure_cors
@@ -21,10 +19,11 @@ app = FastAPI(
     redoc_url="/redoc",
     openapi_url="/openapi.json",
 )
+
 configure_cors(app)
-app.add_middleware(RequestLoggingMiddleware)
-app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RequestIDMiddleware)
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(RequestLoggingMiddleware)
 register_exception_handlers(app)
 
 
@@ -44,21 +43,3 @@ def root():
 
 
 app.include_router(api_router, prefix="/api")
-
-
-@app.get("/health")
-def health_check():
-    return {
-        "status": "ok",
-    }
-
-
-@app.get("/health/db")
-def database_health_check(
-    db: Session = Depends(get_db),
-):
-    db.execute(text("SELECT 1"))
-
-    return {
-        "database": "connected",
-    }
