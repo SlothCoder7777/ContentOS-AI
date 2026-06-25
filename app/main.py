@@ -8,6 +8,7 @@ from app.core.cors import configure_cors
 from app.core.database import get_db
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import RequestLoggingMiddleware, configure_logging
+from app.core.request_id import RequestIDMiddleware
 from app.core.security_headers import SecurityHeadersMiddleware
 
 configure_logging()
@@ -20,6 +21,7 @@ app = FastAPI(
 configure_cors(app)
 app.add_middleware(RequestLoggingMiddleware)
 app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(RequestIDMiddleware)
 register_exception_handlers(app)
 
 app.include_router(api_router, prefix="/api")
