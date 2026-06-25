@@ -24,16 +24,23 @@ app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RequestIDMiddleware)
 register_exception_handlers(app)
 
-app.include_router(api_router, prefix="/api")
 
-
-@app.get("/")
+@app.get("/", tags=["Root"])
 def root():
     return {
-        "app": settings.app_name,
-        "environment": settings.app_env,
+        "service": "ContentOS AI Backend",
         "status": "running",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "redoc": "/redoc",
+        "api": "/api/v1",
+        "health": "/api/v1/health",
+        "database_health": "/api/v1/health/db",
+        "system_info": "/api/v1/system/info",
     }
+
+
+app.include_router(api_router, prefix="/api")
 
 
 @app.get("/health")
