@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.v1 import (
+    ai_influencers,
     auth,
     brands,
     content_projects,
@@ -19,6 +20,7 @@ api_router.include_router(brands.router, prefix=API_V1_PREFIX)
 api_router.include_router(content_projects.router, prefix=API_V1_PREFIX)
 api_router.include_router(whatsapp_campaigns.router, prefix=API_V1_PREFIX)
 api_router.include_router(trends.router, prefix=API_V1_PREFIX)
+api_router.include_router(ai_influencers.router, prefix=API_V1_PREFIX)
 api_router.include_router(users.router, prefix=API_V1_PREFIX)
 api_router.include_router(health.router, prefix=API_V1_PREFIX)
 api_router.include_router(system.router, prefix=API_V1_PREFIX)
