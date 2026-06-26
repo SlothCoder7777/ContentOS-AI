@@ -3,6 +3,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from app.core.constants import APP_NAME, APP_VERSION
 from app.core.database import get_db
 
 router = APIRouter(
@@ -15,8 +16,8 @@ router = APIRouter(
 def health_check():
     return {
         "status": "healthy",
-        "service": "ContentOS AI Backend",
-        "version": "1.0.0",
+        "service": APP_NAME,
+        "version": APP_VERSION,
     }
 
 

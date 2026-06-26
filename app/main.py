@@ -1,6 +1,15 @@
 from fastapi import FastAPI
 
 from app.api.router import api_router
+from app.core.constants import (
+    API_PREFIX,
+    API_VERSION,
+    APP_NAME,
+    APP_VERSION,
+    DOCS_URL,
+    OPENAPI_URL,
+    REDOC_URL,
+)
 from app.core.cors import configure_cors
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import RequestLoggingMiddleware, configure_logging
@@ -11,13 +20,13 @@ from app.core.security_headers import SecurityHeadersMiddleware
 configure_logging()
 
 app = FastAPI(
-    title="ContentOS AI Backend",
+    title=APP_NAME,
     description=API_DESCRIPTION,
-    version="1.0.0",
+    version=APP_VERSION,
     openapi_tags=OPENAPI_TAGS,
-    docs_url="/docs",
-    redoc_url="/redoc",
-    openapi_url="/openapi.json",
+    docs_url=DOCS_URL,
+    redoc_url=REDOC_URL,
+    openapi_url=OPENAPI_URL,
 )
 
 configure_cors(app)
@@ -30,16 +39,16 @@ register_exception_handlers(app)
 @app.get("/", tags=["Root"])
 def root():
     return {
-        "service": "ContentOS AI Backend",
+        "service": APP_NAME,
         "status": "running",
-        "version": "1.0.0",
-        "docs": "/docs",
-        "redoc": "/redoc",
-        "api": "/api/v1",
-        "health": "/api/v1/health",
-        "database_health": "/api/v1/health/db",
-        "system_info": "/api/v1/system/info",
+        "version": APP_VERSION,
+        "docs": DOCS_URL,
+        "redoc": REDOC_URL,
+        "api": f"{API_PREFIX}/{API_VERSION}",
+        "health": f"{API_PREFIX}/{API_VERSION}/health",
+        "database_health": f"{API_PREFIX}/{API_VERSION}/health/db",
+        "system_info": f"{API_PREFIX}/{API_VERSION}/system/info",
     }
 
 
-app.include_router(api_router, prefix="/api")
+app.include_router(api_router, prefix=API_PREFIX)

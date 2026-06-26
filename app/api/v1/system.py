@@ -2,6 +2,8 @@ import os
 
 from fastapi import APIRouter
 
+from app.core.constants import API_VERSION, APP_NAME, APP_VERSION
+
 router = APIRouter(
     prefix="/system",
     tags=["System"],
@@ -11,8 +13,8 @@ router = APIRouter(
 @router.get("/info")
 def system_info():
     return {
-        "service": "ContentOS AI Backend",
-        "version": "1.0.0",
+        "service": APP_NAME,
+        "version": APP_VERSION,
         "environment": os.getenv("ENVIRONMENT", "development"),
-        "api_version": "v1",
+        "api_version": API_VERSION,
     }
