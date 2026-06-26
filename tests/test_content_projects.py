@@ -29,6 +29,8 @@ def build_project(
     owner_id: UUID | None = None,
     title: str = "Instagram Monsoon Campaign",
     status: str = "draft",
+    generated_content: dict | None = None,
+    project_metadata: dict | None = None,
 ):
     now = datetime.now(timezone.utc)
 
@@ -41,8 +43,8 @@ def build_project(
         "platform": "Instagram",
         "brief": "Create a monsoon dessert campaign",
         "status": status,
-        "generated_content": {"caption": "Enjoy monsoon with Kulfi Lounge"},
-        "project_metadata": {"campaign": "monsoon"},
+        "generated_content": generated_content,
+        "project_metadata": project_metadata,
         "created_at": now,
         "updated_at": now,
     }
@@ -75,6 +77,31 @@ class FakeContentProjectService:
             owner_id=owner.id,
             title=project_data.title or "Instagram Monsoon Campaign Updated",
             status=project_data.status or "draft",
+        )
+
+    def generate_project_content(self, owner, project_id, request_data):
+        return build_project(
+            project_id=project_id,
+            owner_id=owner.id,
+            status="generated",
+            generated_content={
+                "content_type": "instagram_post",
+                "platform": "Instagram",
+                "tone": request_data.tone or "engaging",
+                "variations": [
+                    {
+                        "variation": 1,
+                        "headline": "Instagram Monsoon Campaign - Idea 1",
+                        "caption": "Enjoy monsoon with Kulfi Lounge",
+                        "call_to_action": "Try it today",
+                    }
+                ],
+            },
+            project_metadata={
+                "generation_engine": "local-template-v1",
+                "output_count": request_data.output_count,
+                "tone": request_data.tone,
+            },
         )
 
     def delete_project(self, owner, project_id):
@@ -160,6 +187,29 @@ def test_update_content_project_endpoint():
     assert data["id"] == str(project_id)
     assert data["title"] == "Instagram Monsoon Campaign Updated"
     assert data["status"] == "in_progress"
+
+
+def test_generate_content_project_endpoint():
+    project_id = uuid4()
+
+    response = client.post(
+        f"/api/v1/content-projects/{project_id}/generate",
+        json={
+            "tone": "friendly",
+            "output_count": 1,
+            "prompt_override": "Make it suitable for monsoon offer",
+        },
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["id"] == str(project_id)
+    assert data["status"] == "generated"
+    assert data["generated_content"]["tone"] == "friendly"
+    assert len(data["generated_content"]["variations"]) == 1
+    assert data["project_metadata"]["generation_engine"] == "local-template-v1"
 
 
 def test_delete_content_project_endpoint():

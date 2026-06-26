@@ -6,12 +6,18 @@ from sqlalchemy.orm import Session
 from app.models.content_project import ContentProject
 from app.models.user import User
 from app.repositories.content_project_repository import ContentProjectRepository
-from app.schemas.content_project import ContentProjectCreate, ContentProjectUpdate
+from app.schemas.content_project import (
+    ContentProjectCreate,
+    ContentProjectGenerateRequest,
+    ContentProjectUpdate,
+)
+from app.services.content_generation_service import ContentGenerationService
 
 
 class ContentProjectService:
     def __init__(self, db: Session):
         self.repository = ContentProjectRepository(db)
+        self.generation_service = ContentGenerationService()
 
     def create_project(
         self,
@@ -69,6 +75,37 @@ class ContentProjectService:
         return self.repository.update(
             project=project,
             project_data=project_data,
+        )
+
+    def generate_project_content(
+        self,
+        owner: User,
+        project_id: UUID,
+        request_data: ContentProjectGenerateRequest,
+    ) -> ContentProject:
+        project = self.get_project(
+            owner=owner,
+            project_id=project_id,
+        )
+
+        generated_content = self.generation_service.generate(
+            project=project,
+            request_data=request_data,
+        )
+
+        update_data = ContentProjectUpdate(
+            status="generated",
+            generated_content=generated_content,
+            project_metadata={
+                "generation_engine": "local-template-v1",
+                "output_count": request_data.output_count,
+                "tone": request_data.tone,
+            },
+        )
+
+        return self.repository.update(
+            project=project,
+            project_data=update_data,
         )
 
     def delete_project(

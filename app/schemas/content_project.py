@@ -83,6 +83,26 @@ class ContentProjectUpdate(BaseModel):
     project_metadata: dict[str, Any] | None = None
 
 
+class ContentProjectGenerateRequest(BaseModel):
+    prompt_override: str | None = Field(
+        default=None,
+        description="Optional extra instruction for generation",
+    )
+
+    tone: str | None = Field(
+        default=None,
+        max_length=80,
+        description="Desired tone, such as friendly, premium, funny, professional",
+    )
+
+    output_count: int = Field(
+        default=3,
+        ge=1,
+        le=10,
+        description="Number of content variations to generate",
+    )
+
+
 class ContentProjectRead(ContentProjectBase):
     id: UUID
     owner_id: UUID

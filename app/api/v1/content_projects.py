@@ -10,6 +10,7 @@ from app.models.content_project import ContentProject
 from app.models.user import User
 from app.schemas.content_project import (
     ContentProjectCreate,
+    ContentProjectGenerateRequest,
     ContentProjectRead,
     ContentProjectUpdate,
 )
@@ -85,6 +86,23 @@ def update_my_content_project(
         owner=current_user,
         project_id=project_id,
         project_data=project_data,
+    )
+
+
+@router.post(
+    "/{project_id}/generate",
+    response_model=ContentProjectRead,
+)
+def generate_content_for_project(
+    project_id: UUID,
+    request_data: ContentProjectGenerateRequest,
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
+) -> ContentProject:
+    return ContentProjectService(db).generate_project_content(
+        owner=current_user,
+        project_id=project_id,
+        request_data=request_data,
     )
 
 
