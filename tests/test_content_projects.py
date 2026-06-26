@@ -101,6 +101,7 @@ class FakeContentProjectService:
                 "generation_engine": "local-template-v1",
                 "output_count": request_data.output_count,
                 "tone": request_data.tone,
+                "use_ai": request_data.use_ai,
             },
         )
 
@@ -198,6 +199,7 @@ def test_generate_content_project_endpoint():
             "tone": "friendly",
             "output_count": 1,
             "prompt_override": "Make it suitable for monsoon offer",
+            "use_ai": False,
         },
     )
 

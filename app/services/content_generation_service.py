@@ -2,13 +2,85 @@ from typing import Any
 
 from app.models.content_project import ContentProject
 from app.schemas.content_project import ContentProjectGenerateRequest
+from app.schemas.llm import LLMGenerateRequest
+from app.services.llm_service import LLMService
 
 
 class ContentGenerationService:
+    def __init__(self):
+        self.llm_service = LLMService()
+
     def generate(
         self,
         project: ContentProject,
         request_data: ContentProjectGenerateRequest,
+    ) -> dict[str, Any]:
+        if request_data.use_ai:
+            return self._generate_with_ai_or_fallback(
+                project=project,
+                request_data=request_data,
+            )
+
+        return self._generate_locally(
+            project=project,
+            request_data=request_data,
+            engine="local-template-v1",
+        )
+
+    def _generate_with_ai_or_fallback(
+        self,
+        project: ContentProject,
+        request_data: ContentProjectGenerateRequest,
+    ) -> dict[str, Any]:
+        try:
+            llm_response = self.llm_service.generate_text(
+                LLMGenerateRequest(
+                    system_prompt=self._build_system_prompt(project),
+                    user_prompt=self._build_user_prompt(
+                        project=project,
+                        request_data=request_data,
+                    ),
+                    metadata={
+                        "project_id": str(getattr(project, "id", "")),
+                        "content_type": project.content_type,
+                        "platform": project.platform,
+                    },
+                )
+            )
+
+            return {
+                "generation_engine": "openai",
+                "model": llm_response.model,
+                "content_type": project.content_type,
+                "platform": project.platform or "General",
+                "tone": request_data.tone
+                or self._get_brand_voice(project)
+                or "engaging",
+                "brief": request_data.prompt_override or project.brief or project.title,
+                "brand_context": self._build_brand_context(project),
+                "ai_output": llm_response.output_text,
+                "variations": [
+                    {
+                        "variation": 1,
+                        "headline": project.title,
+                        "caption": llm_response.output_text,
+                        "call_to_action": self._build_call_to_action(project),
+                    }
+                ],
+            }
+
+        except RuntimeError:
+            return self._generate_locally(
+                project=project,
+                request_data=request_data,
+                engine="local-template-v1-fallback",
+            )
+
+    def _generate_locally(
+        self,
+        project: ContentProject,
+        request_data: ContentProjectGenerateRequest,
+        engine: str,
     ) -> dict[str, Any]:
         platform = project.platform or "General"
         tone = request_data.tone or self._get_brand_voice(project) or "engaging"
@@ -37,6 +109,7 @@ class ContentGenerationService:
             )
 
         return {
+            "generation_engine": engine,
             "content_type": project.content_type,
             "platform": platform,
             "tone": tone,
@@ -44,6 +117,30 @@ class ContentGenerationService:
             "brand_context": brand_context,
             "variations": variations,
         }
+
+    def _build_system_prompt(self, project: ContentProject) -> str:
+        return (
+            "You are ContentOS AI, an expert social media and campaign content assistant. "
+            "Generate clear, practical, brand-aware marketing content."
+        )
+
+    def _build_user_prompt(
+        self,
+        project: ContentProject,
+        request_data: ContentProjectGenerateRequest,
+    ) -> str:
+        brand_context = self._build_brand_context(project)
+
+        return (
+            f"Project title: {project.title}\n"
+            f"Content type: {project.content_type}\n"
+            f"Platform: {project.platform or 'General'}\n"
+            f"Tone: {request_data.tone or self._get_brand_voice(project) or 'engaging'}\n"
+            f"Brief: {request_data.prompt_override or project.brief or project.title}\n"
+            f"Output count: {request_data.output_count}\n"
+            f"Brand context: {brand_context}\n"
+            "Return polished marketing content that is ready to use."
+        )
 
     def _build_brand_context(self, project: ContentProject) -> dict[str, Any] | None:
         brand = getattr(project, "brand", None)

@@ -97,9 +97,10 @@ class ContentProjectService:
             status="generated",
             generated_content=generated_content,
             project_metadata={
-                "generation_engine": "local-template-v1",
+                "generation_engine": generated_content.get("generation_engine"),
                 "output_count": request_data.output_count,
                 "tone": request_data.tone,
+                "use_ai": request_data.use_ai,
             },
         )
 

@@ -102,6 +102,11 @@ class ContentProjectGenerateRequest(BaseModel):
         description="Number of content variations to generate",
     )
 
+    use_ai: bool = Field(
+        default=False,
+        description="Use OpenAI generation when configured. Falls back safely to local generation.",
+    )
+
 
 class ContentProjectRead(ContentProjectBase):
     id: UUID
