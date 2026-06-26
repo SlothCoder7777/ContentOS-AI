@@ -18,3 +18,11 @@ def system_info():
         "environment": os.getenv("ENVIRONMENT", "development"),
         "api_version": API_VERSION,
     }
+
+
+@router.get("/version")
+def system_version():
+    return {
+        "version": APP_VERSION,
+        "api_version": API_VERSION,
+    }
