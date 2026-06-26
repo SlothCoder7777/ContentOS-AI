@@ -14,12 +14,18 @@ from app.schemas.content_project import (
     ContentProjectRead,
     ContentProjectUpdate,
 )
+from app.services.content_preset_service import ContentPresetService
 from app.services.content_project_service import ContentProjectService
 
 router = APIRouter(
     prefix="/content-projects",
     tags=["Content Projects"],
 )
+
+
+@router.get("/presets")
+def get_content_project_presets():
+    return ContentPresetService().get_presets()
 
 
 @router.post(
