@@ -11,7 +11,7 @@ pydantic-settings
 
 python-jose[cryptography]
 passlib[bcrypt]
-
+openai
 python-multipart
 
 email-validator
