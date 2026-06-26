@@ -38,6 +38,15 @@ Completed setup:
 - Alembic migrations
 - Git repository setup
 - GitHub Actions CI workflow
+- Content project CRUD foundation
+- Local AI content generation foundation
+- Brand-aware content generation
+- Content presets API
+- WhatsApp campaign generator
+- Trend detection foundation
+- AI influencer generator
+- Unified campaign generator
+- Week 2 smoke tests
 
 ---
 
@@ -148,3 +157,48 @@ SECRET_KEY
 Add them in:
 
 GitHub Repository → Settings → Secrets and variables → Actions
+``
+--- 
+
+
+## Week 2 AI Foundation Features
+
+Week 2 adds the first working AI-product foundation APIs.
+
+### Content Projects
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/content-projects/presets` | Supported content types, platforms, and tones |
+| POST | `/api/v1/content-projects` | Create a content project |
+| GET | `/api/v1/content-projects` | List content projects |
+| GET | `/api/v1/content-projects/{project_id}` | Get one content project |
+| PATCH | `/api/v1/content-projects/{project_id}` | Update a content project |
+| POST | `/api/v1/content-projects/{project_id}/generate` | Generate content for a project |
+| DELETE | `/api/v1/content-projects/{project_id}` | Delete a content project |
+
+### WhatsApp Campaigns
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/v1/whatsapp-campaigns/generate` | Generate WhatsApp campaign message variations |
+
+### Trends
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/trends/presets` | Supported trend detection presets |
+| POST | `/api/v1/trends/detect` | Generate trend ideas for a niche/platform |
+
+### AI Influencers
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/ai-influencers/presets` | Supported AI influencer presets |
+| POST | `/api/v1/ai-influencers/generate` | Generate AI influencer persona and content direction |
+
+### Unified Campaigns
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/v1/campaigns/generate` | Generate campaign strategy, trend ideas, content variations, WhatsApp messages, and influencer direction |
