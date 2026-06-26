@@ -20,9 +20,12 @@ def system_info():
     }
 
 
-@router.get("/version")
-def system_version():
+@router.get("/environment")
+def system_environment():
+    environment = os.getenv("ENVIRONMENT", "development")
+    debug_value = os.getenv("DEBUG", "False").lower()
+
     return {
-        "version": APP_VERSION,
-        "api_version": API_VERSION,
+        "environment": environment,
+        "debug": debug_value in {"true", "1", "yes", "on"},
     }
