@@ -70,7 +70,7 @@ contentos-ai/
 ├── pytest.ini
 ├── requirements.txt
 └── README.md
-
+```
 ---
 
 ## Local Installation
