@@ -62,6 +62,116 @@ def system_routes():
             },
             {
                 "method": "GET",
+                "path": "/openapi.json",
+                "description": "OpenAPI schema",
+            },
+            {
+                "method": "POST",
+                "path": "/api/v1/auth/register",
+                "description": "Register a new user",
+            },
+            {
+                "method": "POST",
+                "path": "/api/v1/auth/login",
+                "description": "Login and receive JWT token",
+            },
+            {
+                "method": "POST",
+                "path": "/api/v1/brands",
+                "description": "Create brand profile",
+            },
+            {
+                "method": "GET",
+                "path": "/api/v1/brands",
+                "description": "List user brand profiles",
+            },
+            {
+                "method": "GET",
+                "path": "/api/v1/brands/{brand_id}",
+                "description": "Get brand profile by ID",
+            },
+            {
+                "method": "PATCH",
+                "path": "/api/v1/brands/{brand_id}",
+                "description": "Update brand profile",
+            },
+            {
+                "method": "PATCH",
+                "path": "/api/v1/brands/{brand_id}/deactivate",
+                "description": "Deactivate brand profile",
+            },
+            {
+                "method": "DELETE",
+                "path": "/api/v1/brands/{brand_id}",
+                "description": "Delete brand profile",
+            },
+            {
+                "method": "GET",
+                "path": "/api/v1/content-projects/presets",
+                "description": "Get supported content project presets",
+            },
+            {
+                "method": "POST",
+                "path": "/api/v1/content-projects",
+                "description": "Create content project",
+            },
+            {
+                "method": "GET",
+                "path": "/api/v1/content-projects",
+                "description": "List content projects",
+            },
+            {
+                "method": "GET",
+                "path": "/api/v1/content-projects/{project_id}",
+                "description": "Get content project by ID",
+            },
+            {
+                "method": "PATCH",
+                "path": "/api/v1/content-projects/{project_id}",
+                "description": "Update content project",
+            },
+            {
+                "method": "POST",
+                "path": "/api/v1/content-projects/{project_id}/generate",
+                "description": "Generate content for a project",
+            },
+            {
+                "method": "DELETE",
+                "path": "/api/v1/content-projects/{project_id}",
+                "description": "Delete content project",
+            },
+            {
+                "method": "POST",
+                "path": "/api/v1/whatsapp-campaigns/generate",
+                "description": "Generate WhatsApp campaign messages",
+            },
+            {
+                "method": "GET",
+                "path": "/api/v1/trends/presets",
+                "description": "Get trend detection presets",
+            },
+            {
+                "method": "POST",
+                "path": "/api/v1/trends/detect",
+                "description": "Detect trend ideas for a niche",
+            },
+            {
+                "method": "GET",
+                "path": "/api/v1/ai-influencers/presets",
+                "description": "Get AI influencer presets",
+            },
+            {
+                "method": "POST",
+                "path": "/api/v1/ai-influencers/generate",
+                "description": "Generate AI influencer persona",
+            },
+            {
+                "method": "POST",
+                "path": "/api/v1/campaigns/generate",
+                "description": "Generate unified campaign package",
+            },
+            {
+                "method": "GET",
                 "path": "/api/v1/health",
                 "description": "Application health check",
             },
