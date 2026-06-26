@@ -6,8 +6,8 @@ def test_openai_settings_have_safe_defaults():
     settings = OpenAISettings()
 
     assert settings.model == "gpt-5.5"
-    assert settings.timeout_seconds == 1000.0
-    assert settings.max_retries == 1000
+    assert settings.timeout_seconds == 30.0
+    assert settings.max_retries == 2
 
 
 def test_openai_client_service_reports_configuration_status():
