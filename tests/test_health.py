@@ -1,8 +1,26 @@
 from fastapi.testclient import TestClient
 
+from app.api.v1 import health as health_router
 from app.main import app
 
 client = TestClient(app)
+
+
+class FakeDBSession:
+    def execute(self, statement):
+        return 1
+
+
+def fake_get_db():
+    yield FakeDBSession()
+
+
+def setup_module():
+    app.dependency_overrides[health_router.get_db] = fake_get_db
+
+
+def teardown_module():
+    app.dependency_overrides.pop(health_router.get_db, None)
 
 
 def test_health_endpoint_returns_healthy_status():
