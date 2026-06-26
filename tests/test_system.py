@@ -25,5 +25,6 @@ def test_system_version_endpoint_returns_version_metadata():
 
     data = response.json()
 
+    assert data["service"] == "ContentOS AI Backend"
     assert data["version"] == "1.0.0"
     assert data["api_version"] == "v1"

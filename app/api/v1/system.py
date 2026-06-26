@@ -29,3 +29,12 @@ def system_environment():
         "environment": environment,
         "debug": debug_value in {"true", "1", "yes", "on"},
     }
+
+
+@router.get("/version")
+def system_version():
+    return {
+        "service": APP_NAME,
+        "version": APP_VERSION,
+        "api_version": API_VERSION,
+    }
