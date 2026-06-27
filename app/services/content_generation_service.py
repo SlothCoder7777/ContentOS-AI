@@ -4,11 +4,13 @@ from app.models.content_project import ContentProject
 from app.schemas.content_project import ContentProjectGenerateRequest
 from app.schemas.llm import LLMGenerateRequest
 from app.services.llm_service import LLMService
+from app.services.prompt_builder_service import PromptBuilderService
 
 
 class ContentGenerationService:
     def __init__(self):
         self.llm_service = LLMService()
+        self.prompt_builder = PromptBuilderService()
 
     def generate(
         self,
@@ -33,12 +35,19 @@ class ContentGenerationService:
         request_data: ContentProjectGenerateRequest,
     ) -> dict[str, Any]:
         try:
+            brand_context = self._build_brand_context(project)
+
             llm_response = self.llm_service.generate_text(
                 LLMGenerateRequest(
-                    system_prompt=self._build_system_prompt(project),
-                    user_prompt=self._build_user_prompt(
-                        project=project,
-                        request_data=request_data,
+                    system_prompt=self.prompt_builder.build_content_system_prompt(),
+                    user_prompt=self.prompt_builder.build_content_user_prompt(
+                        title=project.title,
+                        content_type=project.content_type,
+                        platform=project.platform,
+                        brief=request_data.prompt_override or project.brief,
+                        tone=request_data.tone or self._get_brand_voice(project),
+                        output_count=request_data.output_count,
+                        brand_context=brand_context,
                     ),
                     metadata={
                         "project_id": str(getattr(project, "id", "")),
@@ -57,7 +66,7 @@ class ContentGenerationService:
                 or self._get_brand_voice(project)
                 or "engaging",
                 "brief": request_data.prompt_override or project.brief or project.title,
-                "brand_context": self._build_brand_context(project),
+                "brand_context": brand_context,
                 "ai_output": llm_response.output_text,
                 "variations": [
                     {
@@ -117,30 +126,6 @@ class ContentGenerationService:
             "brand_context": brand_context,
             "variations": variations,
         }
-
-    def _build_system_prompt(self, project: ContentProject) -> str:
-        return (
-            "You are ContentOS AI, an expert social media and campaign content assistant. "
-            "Generate clear, practical, brand-aware marketing content."
-        )
-
-    def _build_user_prompt(
-        self,
-        project: ContentProject,
-        request_data: ContentProjectGenerateRequest,
-    ) -> str:
-        brand_context = self._build_brand_context(project)
-
-        return (
-            f"Project title: {project.title}\n"
-            f"Content type: {project.content_type}\n"
-            f"Platform: {project.platform or 'General'}\n"
-            f"Tone: {request_data.tone or self._get_brand_voice(project) or 'engaging'}\n"
-            f"Brief: {request_data.prompt_override or project.brief or project.title}\n"
-            f"Output count: {request_data.output_count}\n"
-            f"Brand context: {brand_context}\n"
-            "Return polished marketing content that is ready to use."
-        )
 
     def _build_brand_context(self, project: ContentProject) -> dict[str, Any] | None:
         brand = getattr(project, "brand", None)
