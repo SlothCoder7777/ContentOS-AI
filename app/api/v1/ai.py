@@ -20,6 +20,18 @@ def get_ai_status():
     }
 
 
+@router.get("/health")
+def get_ai_health():
+    configured = openai_client_service.is_configured()
+
+    return {
+        "status": "healthy" if configured else "not_configured",
+        "provider": "openai",
+        "model": openai_settings.model,
+        "configured": configured,
+    }
+
+
 @router.post(
     "/generate",
     response_model=LLMGenerateResponse,

@@ -176,6 +176,11 @@ def system_routes():
                 "description": "Generate text directly using configured AI provider",
             },
             {
+                "method": "GET",
+                "path": "/api/v1/ai/health",
+                "description": "Check safe AI provider health status",
+            },
+            {
                 "method": "POST",
                 "path": "/api/v1/campaigns/generate",
                 "description": "Generate unified campaign package",

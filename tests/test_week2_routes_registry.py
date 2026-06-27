@@ -23,6 +23,7 @@ def test_system_routes_registry_contains_week2_endpoints():
     assert "/api/v1/ai-influencers/generate" in paths
     assert "/api/v1/ai/status" in paths
     assert "/api/v1/ai/generate" in paths
+    assert "/api/v1/ai/health" in paths
     assert "/api/v1/campaigns/generate" in paths
 
 

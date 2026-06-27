@@ -37,6 +37,22 @@ def test_ai_status_endpoint_returns_safe_status():
     assert "OPENAI_API_KEY" not in data
 
 
+def test_ai_health_endpoint_returns_safe_health_status():
+    response = client.get("/api/v1/ai/health")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["provider"] == "openai"
+    assert data["model"] == "gpt-5.5"
+    assert isinstance(data["configured"], bool)
+    assert data["status"] in {"healthy", "not_configured"}
+
+    assert "api_key" not in data
+    assert "OPENAI_API_KEY" not in data
+
+
 def test_ai_generate_endpoint_returns_mocked_llm_output(monkeypatch):
     monkeypatch.setattr(
         ai_router,
