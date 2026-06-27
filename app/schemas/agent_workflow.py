@@ -29,6 +29,11 @@ class ContentWorkflowRunRequest(BaseModel):
         max_length=80,
     )
 
+    use_ai: bool = Field(
+        default=False,
+        description="Use OpenAI for the writer node when configured. Falls back safely.",
+    )
+
 
 class ContentWorkflowRunResponse(BaseModel):
     brand_name: str
@@ -36,7 +41,9 @@ class ContentWorkflowRunResponse(BaseModel):
     platform: str
     content_type: str
     tone: str
+    use_ai: bool
     plan: str
     draft: str
     review: str
     workflow_status: str
+    generation_engine: str
