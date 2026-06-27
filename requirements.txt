@@ -26,3 +26,4 @@ ruff
 
 greenlet
 pwdlib[argon2]
+langgraph
