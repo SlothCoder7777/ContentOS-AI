@@ -166,6 +166,16 @@ def system_routes():
                 "description": "Generate AI influencer persona",
             },
             {
+                "method": "GET",
+                "path": "/api/v1/ai/status",
+                "description": "Check safe AI provider configuration status",
+            },
+            {
+                "method": "POST",
+                "path": "/api/v1/ai/generate",
+                "description": "Generate text directly using configured AI provider",
+            },
+            {
                 "method": "POST",
                 "path": "/api/v1/campaigns/generate",
                 "description": "Generate unified campaign package",

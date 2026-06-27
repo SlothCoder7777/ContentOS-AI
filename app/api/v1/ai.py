@@ -1,12 +1,23 @@
 from fastapi import APIRouter, HTTPException, status
 
+from app.core.openai_settings import openai_settings
 from app.schemas.llm import LLMGenerateRequest, LLMGenerateResponse
 from app.services.llm_service import llm_service
+from app.services.openai_client_service import openai_client_service
 
 router = APIRouter(
     prefix="/ai",
     tags=["AI"],
 )
+
+
+@router.get("/status")
+def get_ai_status():
+    return {
+        "provider": "openai",
+        "model": openai_settings.model,
+        "configured": openai_client_service.is_configured(),
+    }
 
 
 @router.post(

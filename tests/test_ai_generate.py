@@ -22,6 +22,21 @@ class FakeFailingLLMService:
         raise RuntimeError("OpenAI is not configured")
 
 
+def test_ai_status_endpoint_returns_safe_status():
+    response = client.get("/api/v1/ai/status")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data["provider"] == "openai"
+    assert data["model"] == "gpt-5.5"
+    assert isinstance(data["configured"], bool)
+
+    assert "api_key" not in data
+    assert "OPENAI_API_KEY" not in data
+
+
 def test_ai_generate_endpoint_returns_mocked_llm_output(monkeypatch):
     monkeypatch.setattr(
         ai_router,
