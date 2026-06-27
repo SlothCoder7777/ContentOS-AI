@@ -10,6 +10,9 @@ Current backend features include:
 - User management foundation
 - Brand memory foundation
 - Content project management
+- OpenAI GPT-5.5 configuration
+- LLM service wrapper
+- Direct AI generation endpoint
 - Local AI content generation foundation
 - Brand-aware content generation
 - WhatsApp campaign generation
@@ -47,6 +50,10 @@ OPENAPI_TAGS = [
     {
         "name": "Content Projects",
         "description": "Create, manage, and generate content for content projects.",
+    },
+    {
+        "name": "AI",
+        "description": "Direct AI text generation endpoints powered by the LLM service.",
     },
     {
         "name": "WhatsApp Campaigns",
