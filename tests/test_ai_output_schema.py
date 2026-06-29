@@ -52,6 +52,7 @@ def test_structured_ai_output_schema():
     assert output.content_type == "instagram_post"
     assert output.platform == "Instagram"
     assert output.tone == "friendly"
+    assert output.brand_context is not None
     assert output.brand_context["name"] == "Kulfi Lounge"
     assert len(output.variations) == 1
     assert output.variations[0].headline == "Berry Refreshment is Here"
