@@ -202,3 +202,37 @@ Week 2 adds the first working AI-product foundation APIs.
 | Method | Endpoint | Description |
 |---|---|---|
 | POST | `/api/v1/campaigns/generate` | Generate campaign strategy, trend ideas, content variations, WhatsApp messages, and influencer direction |
+
+## Week 3 Real AI Integration Features
+
+Week 3 adds real AI integration foundations while keeping CI safe through mocked tests and safe fallback behavior.
+
+### OpenAI / LLM
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/ai/status` | Safe AI provider configuration status |
+| GET | `/api/v1/ai/health` | Safe AI provider health check |
+| POST | `/api/v1/ai/generate` | Direct AI text generation using the LLM wrapper |
+
+### LangGraph Agents
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/v1/agents/content-workflow/run` | Run planner → writer → reviewer agent workflow |
+
+### Week 3 Completed
+
+- OpenAI GPT-5.5 environment configuration
+- Secure API key handling through `.env`
+- LLM service wrapper
+- Mocked OpenAI tests
+- Direct AI generation endpoint
+- AI provider status endpoint
+- AI provider health endpoint
+- Prompt builder service
+- AI generation mode for content projects
+- Safe fallback when OpenAI is missing or fails
+- LangGraph planner → writer → reviewer workflow
+- AI-enhanced writer node with fallback
+- Week 3 final smoke tests

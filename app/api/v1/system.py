@@ -182,6 +182,11 @@ def system_routes():
             },
             {
                 "method": "POST",
+                "path": "/api/v1/agents/content-workflow/run",
+                "description": "Run LangGraph content workflow with planner, writer, and reviewer agents",
+            },
+            {
+                "method": "POST",
                 "path": "/api/v1/campaigns/generate",
                 "description": "Generate unified campaign package",
             },

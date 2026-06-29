@@ -13,12 +13,17 @@ Current backend features include:
 - OpenAI GPT-5.5 configuration
 - LLM service wrapper
 - Direct AI generation endpoint
+- AI provider status and health endpoints
+- Prompt builder service
 - Local AI content generation foundation
 - Brand-aware content generation
+- AI generation mode with safe fallback
 - WhatsApp campaign generation
 - Trend detection foundation
 - AI influencer generation
 - Unified campaign generation
+- LangGraph agent workflow foundation
+- AI-enhanced agent workflow with fallback
 - Neon PostgreSQL integration
 - Alembic migrations
 - Health checks
@@ -53,7 +58,11 @@ OPENAPI_TAGS = [
     },
     {
         "name": "AI",
-        "description": "Direct AI text generation endpoints powered by the LLM service.",
+        "description": "Direct AI generation, AI health, and AI provider status endpoints.",
+    },
+    {
+        "name": "Agents",
+        "description": "LangGraph-powered AI agent workflow endpoints.",
     },
     {
         "name": "WhatsApp Campaigns",
